@@ -11,9 +11,10 @@ function toggleDescription(button) {
     }
 }
 
-function showModal(title, description, imageUrl, pageUrl) {
+function showModal(title, description, descriptionTec, imageUrl, pageUrl) {
     document.getElementById("modal-title").textContent = title;
     document.getElementById("modal-description").textContent = description;
+    document.getElementById("modal-description-tec").textContent = descriptionTec;
     document.getElementById("modal-image").src = imageUrl;
     document.getElementById("modal-link").href = pageUrl;
     document.getElementById("description-modal").style.display = "flex";

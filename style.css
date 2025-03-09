@@ -250,6 +250,10 @@ nav a {
     margin-bottom: 1em;
 }
 
+.modal-description {
+    margin: 1em 0;
+}
+
 .modal-page-link {
     display: inline-block;
     padding: 0.8em 1.2em;
