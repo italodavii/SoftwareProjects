@@ -1,62 +1,75 @@
-function toggleDescription(button) {
-    const card = button.closest('.project-card'); // Seleciona o card específico
-    const description = card.querySelector('.project-description');
-    
-    if (card.classList.contains('expanded')) {
-        card.classList.remove('expanded');
-        button.textContent = 'Ver mais';
-    } else {
-        card.classList.add('expanded');
-        button.textContent = 'Ver menos';
-    }
-}
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. INICIALIZAÇÃO
+    atualizarContadores();
+    filtrarProjetos('finalizado'); 
 
-function showModal(title, description, descriptionTec, imageUrl, pageUrl) {
-    document.getElementById("modal-title").textContent = title;
-    document.getElementById("modal-description").textContent = description;
-    document.getElementById("modal-description-tec").textContent = descriptionTec;
-    document.getElementById("modal-image").src = imageUrl;
-    document.getElementById("modal-link").href = pageUrl;
-    document.getElementById("description-modal").style.display = "flex";
+    // 2. EVENTOS DO MODAL
+    const modal = document.getElementById("description-modal");
+
+    document.querySelectorAll('.show-more-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const card = button.closest('.project-card');
+            if (!card) return;
+
+            // Extração de dados (Data Attributes)
+            const dados = {
+                title: card.dataset.title || "Sem título",
+                description: card.dataset.description || "",
+                tech: card.dataset.tech || "",
+                image: card.dataset.image || "",
+                link: card.dataset.link || "#"
+            };
+
+            openModal(dados);
+        });
+    });
+
+    // Fechar modal ao clicar fora dele
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
+
+// FUNÇÕES PRINCIPAIS
+function openModal(dados) {
+    const modal = document.getElementById("description-modal");
+    
+    // Preenchimento seguro (verifica se o elemento existe antes de atribuir)
+    if(document.getElementById("modal-title")) document.getElementById("modal-title").textContent = dados.title;
+    if(document.getElementById("modal-description")) document.getElementById("modal-description").textContent = dados.description;
+    if(document.getElementById("modal-description-tec")) document.getElementById("modal-description-tec").textContent = dados.tech;
+    if(document.getElementById("modal-image")) document.getElementById("modal-image").src = dados.image;
+    if(document.getElementById("modal-link")) document.getElementById("modal-link").href = dados.link;
+
+    modal.classList.add("active");
 }
 
 function closeModal() {
-    document.getElementById("description-modal").style.display = "none";
-}
-
-
-window.onclick = function(event) {
-    if (event.target == document.getElementById("description-modal")) {
-        closeModal();
-    }
-};
-
-
-function atualizarContadores() {
-    // Conta quantos projetos há em cada categoria
-    let qtdFinalizado = document.querySelectorAll('.project-card[data-tipo="finalizado"]').length;
-    let qtdDesenvolvimento = document.querySelectorAll('.project-card[data-tipo="desenvolvimento"]').length;
-
-    // Atualiza os números nos botões
-    document.getElementById('qtd-finalizado').textContent = qtdFinalizado;
-    document.getElementById('qtd-desenvolvimento').textContent = qtdDesenvolvimento;
+    const modal = document.getElementById("description-modal");
+    modal.classList.remove("active");
 }
 
 function filtrarProjetos(tipo) {
-    // Remove a classe 'ativo' de todos os botões
-    document.querySelectorAll('.filtro').forEach(btn => btn.classList.remove('ativo'));
+    // 1. Gerenciar botões
+    document.querySelectorAll('.filtro').forEach(btn => {
+        btn.classList.toggle('ativo', btn.dataset.tipo === tipo);
+    });
 
-    // Adiciona a classe 'ativo' ao botão clicado
-    document.querySelector(`.filtro[data-tipo="${tipo}"]`).classList.add('ativo');
-
-    // Filtrar os projetos (mostra apenas os do tipo selecionado)
+    // 2. Filtrar cards com display: flex 
     document.querySelectorAll('.project-card').forEach(projeto => {
-        projeto.style.display = projeto.dataset.tipo === tipo ? 'block' : 'none';
+        projeto.style.display = (projeto.dataset.tipo === tipo) ? 'flex' : 'none';
     });
 }
 
-// Inicialmente, atualizar contadores e exibir finalizados
-document.addEventListener('DOMContentLoaded', () => {
-    atualizarContadores();
-    filtrarProjetos('finalizado'); // Garante que os finalizados estejam selecionados
-});
+function atualizarContadores() {
+    const finalizados = document.querySelectorAll('.project-card[data-tipo="finalizado"]').length;
+    const desenvolvimento = document.querySelectorAll('.project-card[data-tipo="desenvolvimento"]').length;
+
+    const elFinalizado = document.getElementById('qtd-finalizado');
+    const elDesenvolvimento = document.getElementById('qtd-desenvolvimento');
+
+    if (elFinalizado) elFinalizado.textContent = finalizados;
+    if (elDesenvolvimento) elDesenvolvimento.textContent = desenvolvimento;
+}
