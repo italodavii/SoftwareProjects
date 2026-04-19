@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>Italo David - Portfólio</title>
 </head>
@@ -44,384 +45,60 @@
             <div class="hero-image">
                 <img src="assets/foto.webp" alt="Ítalo David">
             </div>
-
         </section>
 
         <section id="projects">
             <h2 class="title">Sessão de Projetos</h2>
 
-            <div class="filtros">
-                <button class="filtro ativo" data-tipo="finalizado" onclick="filtrarProjetos('finalizado')">
-                    Finalizados (<span id="qtd-finalizado">0</span>)
-                </button>
-                <button class="filtro" data-tipo="desenvolvimento" onclick="filtrarProjetos('desenvolvimento')">
-                    Em desenvolvimento (<span id="qtd-desenvolvimento">0</span>)
-                </button>
+            <div class="div-filters d-flex justify-content-center gap-2 mb-4">
+                <button class="btn btn-outline-primary btn-filter active" onclick="filtrarProjetos('todos')">Todos <span id="count-todos" class="badge bg-light text-primary ms-1">0</span></button>
+                <button class="btn btn-outline-primary btn-filter" onclick="filtrarProjetos('finalizado')">Finalizados <span id="count-finalizado" class="badge bg-light text-primary ms-1">0</span></button>
+                <button class="btn btn-outline-primary btn-filter" onclick="filtrarProjetos('desenvolvimento')">Em Desenvolvimento <span id="count-desenv" class="badge bg-light text-primary ms-1">0</span></button>
             </div>
             
-            <div class="projects">
+            <div class="container my-5">
+                <div id="lista-projetos" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-
-                <!--  FINALIZADOS -->
-
-                <!--  Dicionário Online de Inglês -->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="Dicionário Online de Inglês"
-                    data-description="Este projeto consiste em um dicionário online para consultar o significado e uso de palavras em inglês, com uma interface simples e eficiente."
-                    data-tech="Tecnologias utilizadas: HTML, CSS e JavaScript."
-                    data-image="assets/project/dicionario.webp"
-                    data-link="https://italodavii.github.io/Dicionario-Online-de-Ingles/">
-
-                    <img src="assets/project/dicionario.webp" alt="Dicionário Online de Inglês">
-
-                    <h2>Dicionário Online de Inglês</h2>
-
-                    <p class="project-description">
-                        Dicionário de inglês: significado e uso da palavra.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Dicionario-Online-de-Ingles/" target="_blank">Visitar página</a>
-                
+                    <!-- DIVs falsas pra efeito de carregando -->
+                    <div class="col-md-4 placeholder-glow card-loader">
+                        <div class="card h-100" aria-hidden="true">
+                            <div class="placeholder col-12" style="height: 200px;"></div>
+                            <div class="card-body">
+                                <h5 class="card-title placeholder-glow">
+                                    <span class="placeholder col-6"></span>
+                                </h5>
+                                <p class="card-text placeholder-glow">
+                                    <span class="placeholder col-7"></span>
+                                    <span class="placeholder col-4"></span>
+                                    <span class="placeholder col-4"></span>
+                                    <span class="placeholder col-6"></span>
+                                </p>
+                                <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Aqui finaliza a DIV falsa de carregamento -->
                 </div>
+            </div>
 
-                <!--Blog estatico-->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="Blog estático"
-                    data-description="Este blog estático foi desenvolvido como parte de um projeto acadêmico, com foco em estruturação básica de conteúdo e design responsivo."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/blog.webp"
-                    data-link="https://italodavii.github.io/Blog-estatico/">
+            <div class="modal fade" id="modalProjeto" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitulo"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    <div class="modal-body">
+                        <img src="" id="modal-img" class="img-fluid mb-3" alt="Imagem do projeto">
+                        <p id="modal-desc"></p>
+                        <small id="modal-tech"></small>
+                    </div>
 
-                    <img src="assets/project/blog.webp" alt="Blog estático">
-
-                    <h2>Blog estático</h2>
-
-                    <p class="project-description">
-                        Blog simples, desenvolvimento acadêmico.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Blog-estatico/" target="_blank">Visitar página</a>
-                
+                    <div class="modal-footer" style="display: flex; justify-content: center;">
+                        <a id="modal-link" href="#" target="_blank" class="btn btn-primary">Visitar Projeto</a>
+                    </div>
+                    </div>
                 </div>
-                
-                <!--Cotação-->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="Cotação Dólar e Euro"
-                    data-description="Software que monitora em tempo real as cotações do dólar e euro em relação ao real, atualizando automaticamente a cada 30 segundos e exibindo data e hora no horário de Brasília em uma interface clara e prática."
-                    data-tech="Tecnologias utilizadas: HTML, CSS e JavaScript."
-                    data-image="assets/project/cotacao.webp"
-                    data-link="https://italodavii.github.io/cotacao-euro-dolar/">
-
-                    <img src="assets/project/cotacao.webp" alt="Cotação Dólar e Euro">
-
-                    <h2>Cotação Dólar e Euro</h2>
-
-                    <p class="project-description">
-                        Software que exibe em tempo real as cotações do dólar e euro.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/cotacao-euro-dolar/" target="_blank">Visitar página</a>
-                
-                </div>
-
-                <!--gov.br-->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="Tela de login gov.br"
-                    data-description="Este projeto é uma recriação de uma tela de login inspirada na oficial do gov.br, com design simples e funcional."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/tela gov.webp"
-                    data-link="https://italodavii.github.io/gov.br-tela-de-login/">
-
-                    <img src="assets/project/tela gov.webp" alt="Tela de login gov.br">
-
-                    <h2>Tela de login gov.br</h2>
-
-                    <p class="project-description">
-                        Tela de login inspirada na oficial do gov.br.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/gov.br-tela-de-login/" target="_blank">Visitar página</a>
-                
-                </div>
-
-
-                <!--Login-->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="Tela de login"
-                    data-description="Esse projeto oferece uma interface completa de login com formulário de cadastro, campos de validação e design responsivo."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/tela login.webp"
-                    data-link="https://italodavii.github.io/tela-de-login-com-cadastro/">
-
-                    <img src="assets/project/tela login.webp" alt="Tela de login">
-
-                    <h2>Tela de login</h2>
-
-                    <p class="project-description">
-                        Tela de login com formulário de cadastro integrado. 
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/tela-de-login-com-cadastro/" target="_blank">Visitar página</a>
-                
-                </div>
-                
-                
-                <!--Landing page-->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="Landing page"
-                    data-description="Esta landing page foi criada para um ecommerce fictício, com foco em uma interface limpa e atraente para atrair clientes."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/sevem.webp"
-                    data-link="https://italodavii.github.io/Landing-Page-Sevem-Shopping/">
-
-                    <img src="assets/project/sevem.webp" alt="Landing page">
-
-                    <h2>Landing page</h2>
-
-                    <p class="project-description">
-                        Landing page para ecommerce fictício. 
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Landing-Page-Sevem-Shopping/" target="_blank">Visitar página</a>
-                
-                </div>
-                
-
-                <!--FlexBox - RPG-->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="FlexBox - RPG"
-                    data-description="Este projeto consiste em uma tela de RPG criada utilizando Flexbox, com uma breve história sobre o mundo fictício e os personagens principais."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/FlexBox - RPG.webp"
-                    data-link="https://italodavii.github.io/Flexbox-RPG/">
-
-                    <img src="assets/project/FlexBox - RPG.webp" alt="FlexBox - RPG">
-
-                    <h2>FlexBox - RPG</h2>
-
-                    <p class="project-description">
-                        Projeto de tela de RPG com breve história.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Flexbox-RPG/" target="_blank">Visitar página</a>
-                
-                </div>
-
-                <!--Relogio-->
-                <div class="project-card"
-                    
-                    data-tipo="finalizado"
-                    
-                    data-title="Relógio Digital Minimalista"
-                    data-description="Um relógio digital simples e moderno, desenvolvido com HTML, CSS e JavaScript. Ele exibe a hora e data em tempo real com um design minimalista e responsivo, ideal para quem busca uma interface limpa e funcional."
-                    data-tech="Tecnologias utilizadas: HTML, CSS e JavaScript."
-                    data-image="assets/project/relogio.webp"
-                    data-link="https://italodavii.github.io/Relogio-Digital/">
-
-                    <img src="assets/project/relogio.webp" alt="Relógio Digital Minimalista">
-
-                    <h2>Relógio Digital Minimalista</h2>
-
-                    <p class="project-description">
-                        Elegância e precisão no seu navegador.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Relogio-Digital/" target="_blank">Visitar página</a>
-                
-                </div>
-                
-    
-
-
-                <!-- EM DESENVOLVIMENTO -->
-
-                <!--Calculadora-->
-                <div class="project-card"
-                    
-                    data-tipo="desenvolvimento"
-                    
-                    data-title="Calculadora"
-                    data-description="Este projeto é uma calculadora simples em HTML, CSS e JavaScript, que permite realizar operações matemáticas básicas (soma, subtração, multiplicação e divisão). Ele inclui validação de entradas, exibe mensagens de erro para valores inválidos e tem a opção de limpar os campos."
-                    data-tech="Tecnologias utilizadas: HTML, CSS e JavaScript."
-                    data-image="assets/project/webCalculadora.png"
-                    data-link="https://italodavii.github.io/webCalculadora/">
-
-                    <img src="assets/project/webCalculadora.png" alt="Calculadora">
-
-                    <h2>Calculadora</h2>
-
-                    <p class="project-description">
-                        Projeto acadêmico de uma calculadora
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/webCalculadora/" target="_blank">Visitar página</a>
-                
-                </div>
-
-                <!--Sense Finanças-->
-                <div class="project-card"
-                    
-                    data-tipo="desenvolvimento"
-                    
-                    data-title="Sense Finanças"
-                    data-description="Sense Finanças é um projeto acadêmico que visa o gerenciamento de finanças pessoais, sem a utilização de banco de dados, com foco em funcionalidades básicas para controle financeiro."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/sense.webp"
-                    data-link="https://italodavii.github.io/Sense-Financas/">
-
-                    <img src="assets/project/sense.webp" alt="Sense Finanças">
-
-                    <h2>Sense Finanças</h2>
-
-                    <p class="project-description">
-                        Projeto acadêmico de finanças sem BD.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Sense-Financas/" target="_blank">Visitar página</a>
-                
-                </div>
-
-                <!--Tier - cashback-->
-                <div class="project-card"
-                    
-                    data-tipo="desenvolvimento"
-                    
-                    data-title="Tier - cashback"
-                    data-description="Este projeto foi inspirado por uma ideia pessoal de criar um sistema de login voltado para programas de cashback, com design simples e funcional."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/tier.webp"
-                    data-link="https://italodavii.github.io/Tier-cashback/">
-
-                    <img src="assets/project/tier.webp" alt="Tier - cashback">
-
-                    <h2>Tier - cashback</h2>
-
-                    <p class="project-description">
-                        Inspiração pessoal, login de cashback.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Tier-cashback/" target="_blank">Visitar página</a>
-                
-                </div>
-                
-                <!--NxPlay - filmes-->
-                <div class="project-card"
-                    
-                    data-tipo="desenvolvimento"
-                    
-                    data-title="NxPlay - filmes"
-                    data-description="NxPlay é um software em desenvolvimento para streaming de filmes, com uma interface simples e intuitiva, visando facilitar a navegação e busca de conteúdo."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/NxPlay.webp"
-                    data-link="https://italodavii.github.io/NxPlay-Inspired/">
-
-                    <img src="assets/project/NxPlay.webp" alt="NxPlay - filmes">
-
-                    <h2>NxPlay - filmes</h2>
-
-                    <p class="project-description">
-                        Software de filmes, em processo de desenvolvimento.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/NxPlay-Inspired/" target="_blank">Visitar página</a>
-                
-                </div>
-
-                <!--Cronometro Interativo-->
-                <div class="project-card"
-                    
-                    data-tipo="desenvolvimento"
-                    
-                    data-title="Cronometro Interativo"
-                    data-description="Um cronômetro digital interativo, desenvolvido com HTML, CSS e JavaScript. Ele permite iniciar, pausar e reiniciar a contagem do tempo de forma intuitiva, com um design minimalista e responsivo. Ideal para atividades que exigem controle de tempo preciso."
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/cronometro.webp"
-                    data-link="https://italodavii.github.io/Cronometro/">
-
-                    <img src="assets/project/cronometro.webp" alt="Cronometro Interativo">
-
-                    <h2>Cronometro Interativo</h2>
-
-                    <p class="project-description">
-                        Controle o tempo com precisão e facilidade.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/Cronometro/" target="_blank">Visitar página</a>
-                
-                </div>
-
-                <!--Pilha Local-->
-                <div class="project-card"
-                    
-                    data-tipo="desenvolvimento"
-                    
-                    data-title="Pilha Local"
-                    data-description="O Pilha Local é uma plataforma que facilita a busca por pontos de descarte correto de pilhas e baterias usadas. Com um design intuitivo, permite o login via redes sociais ou e-mail, conectando usuários a uma comunidade preocupada com o meio ambiente. Junte-se a essa iniciativa e contribua para um mundo mais sustentável!"
-                    data-tech="Tecnologias utilizadas: HTML e CSS."
-                    data-image="assets/project/PilhaLocal.webp"
-                    data-link="https://italodavii.github.io/PilhaLocal/">
-
-                    <img src="assets/project/PilhaLocal.webp" alt="Pilha Local">
-
-                    <h2>Pilha Local</h2>
-
-                    <p class="project-description">
-                        Encontre locais de descarte sustentável de pilhas e baterias.
-                    </p>
-
-                    <button class="show-more-btn">Ver detalhes</button>
-
-                    <a href="https://italodavii.github.io/PilhaLocal/" target="_blank">Visitar página</a>
-                
-                </div>
-            
             </div>
         </section>
     </main>
@@ -470,6 +147,8 @@
         <a id="modal-link" href="#" target="_blank" class="modal-page-link">Visitar página</a>
     </div>
 </div>
-<script src="script.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="components/config-BD.js" type="module"></script>
 </body>
 </html>
